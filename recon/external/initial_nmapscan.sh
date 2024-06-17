@@ -12,7 +12,7 @@ TARGETS_FILE="$1"
 sudo nmap -Pn -T4 -sV -iL "$TARGETS_FILE" -oN sS.txt --open -vvv
 
 # Run the second nmap command
-sudo nmap -Pn -sU -sV --version-intensity 0 -F -n -iL "$TARGETS_FILE" --open -vvv
+sudo nmap -Pn -sU -sV --version-intensity 0 -F -n -iL "$TARGETS_FILE" -oN sU.txt --open -vvv
 
 # Run the third nmap command
 sudo nmap -Pn -T4 -sV -p- -iL "$TARGETS_FILE" -oN sSall.txt --open -vvv

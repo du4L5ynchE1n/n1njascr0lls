@@ -39,7 +39,7 @@ It includes an option for saving unique URLs in a file.
 
 ## **Usage**
 
-`python server-status_monitor.py -u 'http://example.com/server-status'`
+`python3 server-status_monitor.py -u 'http://example.com/server-status -o output.txt'`
 
 
 ## **Why I created this?**

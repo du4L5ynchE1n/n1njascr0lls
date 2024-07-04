@@ -45,7 +45,7 @@ It includes an option for saving unique URLs in a file.
 ## **Why I created this?**
 
 * To prove the severity of having an exposed Apache server-status. 
-* Modified the original script to a different format because the script didn't work to the exposed server-status I encountered.
+* Modified the original script to a different format because the script didn't work to the exposed server-status format I encountered.
 * I needed an actual PoC exploit.
 
 # **Requirements**
